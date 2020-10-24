@@ -1,37 +1,38 @@
 #include <SFML/Graphics.hpp>
-#include<vector>
-#include<ctime>
-#include<cstdlib>
+#include<iostream>
 
 using namespace sf;
 using namespace std;
+
+
+#define DEBUG true;
 
 int main()
 {
 
 	RenderWindow window(sf::VideoMode(600, 400), "Davics", Style::Default);
 	window.setFramerateLimit(60);
-	int timer = 0;
-	int projectileTimer = 0;
+
+	Texture catTexture;
+	Sprite CatSprite;
+
+	Texture dogTexture;
+	Sprite DogSprite;
+
+	if (!catTexture.loadFromFile("../Textures/cat.png"))
+		cout << "load Failed!" << endl;
 
 
-	srand(static_cast<int>(time(NULL)));
+	CatSprite.setTexture(catTexture);
+	CatSprite.setScale(Vector2f(0.2f, 0.2f));
 
-	CircleShape Player(30.f);
-	Player.setPosition(window.getSize().x / 2, window.getSize().y / 1.2);
-	Player.setFillColor(Color::White);
+	if (!dogTexture.loadFromFile("../Textures/dog.png"))
+		cout << "load Failed!" << endl;
 
-	vector<RectangleShape> EnemyContainer;
+	DogSprite.setTexture(dogTexture);
+	DogSprite.setScale(Vector2f(0.2f, 0.2f));
+	DogSprite.setPosition(window.getPosition().x / 2, window.getPosition().y / 2);
 
-
-	RectangleShape rect;
-	rect.setSize(Vector2f(20.f, 20.f));
-	rect.setFillColor(Color::Yellow);
-
-	CircleShape Projectiles(5.f);
-	Projectiles.setFillColor(Color::Red);
-
-	vector<CircleShape> ProjectileContainer;
 
 	while (window.isOpen())
 	{
@@ -45,72 +46,11 @@ int main()
 				window.close();
 		}
 
-		if (timer >= 20)
-		{
-			rect.setPosition((int)rand() % window.getSize().x, (int)rand() % window.getSize().y / 4);
-			EnemyContainer.push_back(RectangleShape(rect));
 
-			timer = 0;
-		}
+		window.clear(Color::White);
 
-		else
-			++timer;
-
-
-		if (Mouse::getPosition(window).x >= 0 && Mouse::getPosition(window).x <= window.getSize().x - (Player.getRadius() * 2))
-			Player.setPosition(Mouse::getPosition(window).x, Player.getPosition().y);
-
-		for (int i = 0; i < EnemyContainer.size(); ++i)
-		{
-			EnemyContainer[i].move(0.f, .5f);
-
-			if (EnemyContainer[i].getPosition().y > window.getSize().y ||
-				EnemyContainer[i].getGlobalBounds().intersects(Player.getGlobalBounds()))
-			{
-				EnemyContainer.erase(EnemyContainer.begin() + i);
-			}
-		}
-
-		if (Mouse::isButtonPressed(Mouse::Left) && projectileTimer >= 20)
-		{
-			Projectiles.setPosition(Player.getPosition().x + Player.getRadius(), Player.getPosition().y - 10.f);
-			ProjectileContainer.push_back(CircleShape(Projectiles));
-			projectileTimer = 0;
-		}
-
-		else
-			projectileTimer++;
-
-		for (int i = 0; i < ProjectileContainer.size(); ++i)
-		{
-			ProjectileContainer[i].move(0.f, -1.f);
-
-			if (ProjectileContainer[i].getPosition().y < 0)
-				ProjectileContainer.erase(ProjectileContainer.begin() + i);
-		}
-
-		for (int i = 0; i < EnemyContainer.size(); ++i)
-		{
-			for (int j = 0;j < ProjectileContainer.size(); ++j)
-			{
-
-				if (EnemyContainer[i].getGlobalBounds().intersects(ProjectileContainer[j].getGlobalBounds()))
-				{
-					ProjectileContainer.erase(ProjectileContainer.begin() + j);
-					EnemyContainer.erase(EnemyContainer.begin() + i);
-				}
-			}
-		}
-
-
-		window.clear(Color::Black);
-		window.draw(Player);
-
-		for (const auto& i : EnemyContainer)
-			window.draw(i);
-
-		for (const auto& i : ProjectileContainer)
-			window.draw(i);
+		window.draw(CatSprite);
+		window.draw(DogSprite);
 
 		window.display();
 
