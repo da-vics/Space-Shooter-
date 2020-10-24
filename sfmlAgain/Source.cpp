@@ -25,7 +25,7 @@ int main()
 
 
 	RectangleShape rect;
-	rect.setSize(Vector2f(10.f, 10.f));
+	rect.setSize(Vector2f(20.f, 20.f));
 	rect.setFillColor(Color::Yellow);
 
 	CircleShape Projectiles(5.f);
@@ -47,7 +47,7 @@ int main()
 
 		if (timer >= 20)
 		{
-			rect.setPosition((int)rand() % window.getSize().x, (int)rand() % window.getSize().y);
+			rect.setPosition((int)rand() % window.getSize().x, (int)rand() % window.getSize().y / 4);
 			EnemyContainer.push_back(RectangleShape(rect));
 
 			timer = 0;
