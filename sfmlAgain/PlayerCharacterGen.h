@@ -37,5 +37,7 @@ private:
 	void MovePlayerLogic();
 	void FireBullets();
 
+	int _fireTimer = 30;
+
 };
 

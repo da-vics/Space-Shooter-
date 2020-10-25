@@ -31,15 +31,22 @@ void PlayerCharacterGen::MovePlayerLogic()
 void PlayerCharacterGen::FireBullets()
 {
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && this->_fireTimer >= 25)
 	{
-		this->_bullet->Asset.setPosition(this->Asset.getPosition().x, this->Asset.getPosition().y);
+		this->_bullet->Asset.setPosition(this->Asset.getPosition().x + _playerWidth, this->Asset.getPosition().y);
 		this->Bullets.push_back(*_bullet);
+
+		_fireTimer = 0;
 	}
+
+	else
+		++this->_fireTimer;
 
 	for (auto i = 0; i < this->Bullets.size();++i)
 	{
-		this->Bullets[i].Asset.move(1.2f, 0);
+		this->Bullets[i].Asset.move(2.f, 0);
+		if (Bullets[i].Asset.getPosition().x > this->_window->getSize().x)
+			Bullets.erase(Bullets.begin() + i);
 	}
 
 }
