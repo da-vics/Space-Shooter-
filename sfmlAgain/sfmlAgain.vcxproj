@@ -147,7 +147,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseObjectClass.cpp" />
+    <ClCompile Include="BulletObj.cpp" />
+    <ClCompile Include="PlayerCharacterGen.cpp" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BaseObjectClass.h" />
+    <ClInclude Include="BulletObj.h" />
+    <ClInclude Include="PlayerCharacterGen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
