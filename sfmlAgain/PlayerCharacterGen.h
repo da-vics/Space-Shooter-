@@ -9,6 +9,7 @@ class PlayerCharacterGen :public BaseObjectClass
 public:
 
 	float PlayerHp = 300.f;
+	int GameScore = 0;
 	sf::RectangleShape HealthBar;
 	std::vector<BulletObj>Bullets;
 

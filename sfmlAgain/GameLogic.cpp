@@ -1,5 +1,27 @@
 #include "GameLogic.h"
 
+GameLogic::GameLogic(sf::RenderWindow* window)
+{
+	srand(static_cast<int>(time(NULL)));
+
+	this->_gamewindow = window;
+
+	if (!this->_font.loadFromFile("../Fonts/Handlee.ttf"))
+		std::cout << "error" << std::endl;
+
+	this->_uIText.setFont(this->_font);
+	this->_uIText.setString("HP:");
+	this->_uIText.setFillColor(sf::Color::Red);
+	this->_uIText.setScale(0.4f, 0.4f);
+	this->_uIText.setStyle(sf::Text::Bold);
+
+	this->_uIScore.setFont(this->_font);
+	this->_uIScore.setString("Score:");
+	this->_uIScore.setFillColor(sf::Color::White);
+	this->_uIScore.setScale(0.4f, 0.4f);
+	this->_uIScore.setStyle(sf::Text::Bold);
+}
+
 void GameLogic::SetupPlayer(std::string TextureLocation, std::string bulletLocation, sf::Vector2f pos, sf::Vector2f scale)
 {
 	this->_playerCharGen = new PlayerCharacterGen(TextureLocation, bulletLocation, pos, scale, _gamewindow);
@@ -25,7 +47,8 @@ void GameLogic::RandEnemyGen()
 {
 	if (this->_randEnemyTimer >= 15)
 	{
-		this->_enemyCharGen->Asset.setPosition((int)rand() % this->_gamewindow->getSize().x + 400, (int)rand() % this->_gamewindow->getSize().y + 10.f);
+		auto temp = this->_enemyCharGen->Asset.getTextureRect().height * this->_enemyCharGen->Asset.getScale().y;
+		this->_enemyCharGen->Asset.setPosition(rand() % this->_gamewindow->getSize().x + 400, rand() % this->_gamewindow->getSize().y - temp);
 		this->_randEnemys.push_back(this->_enemyCharGen->Asset);
 		this->_randEnemyTimer = 0;
 	}
@@ -35,9 +58,12 @@ void GameLogic::RandEnemyGen()
 
 }
 
-void GameLogic::GameCharScreenLoad() const
+void GameLogic::GameCharScreenLoad()
 {
+	auto temp = "Score : " + std::to_string(this->_playerCharGen->GameScore);
+	this->_uIScore.setString(temp);
 	this->_gamewindow->draw(this->_uIText);
+	this->_gamewindow->draw(this->_uIScore);
 	this->_gamewindow->draw(this->_playerCharGen->HealthBar);
 	this->_gamewindow->draw(this->_playerCharGen->Asset);
 
@@ -64,6 +90,10 @@ void GameLogic::MoveEnemy()
 		if (this->_playerCharGen->Asset.getGlobalBounds().intersects(this->_randEnemys[assetIndex].getGlobalBounds()))
 		{
 			this->_randEnemys.erase(this->_randEnemys.begin() + assetIndex);
+
+			(this->_playerCharGen->PlayerHp > 0) ? this->_playerCharGen->PlayerHp -= 10 : this->_playerCharGen->PlayerHp = 0;
+
+			this->_playerCharGen->HealthBar.setSize(sf::Vector2f(this->_playerCharGen->PlayerHp, 10.f));
 		}
 	}
 
@@ -79,6 +109,7 @@ void GameLogic::CollisonDection()
 			{
 				this->_playerCharGen->Bullets.erase(this->_playerCharGen->Bullets.begin() + j);
 				this->_randEnemys.erase(this->_randEnemys.begin() + i);
+				this->_playerCharGen->GameScore += 10;
 				break;
 			}
 		}
