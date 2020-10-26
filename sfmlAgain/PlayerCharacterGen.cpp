@@ -14,7 +14,7 @@ void PlayerCharacterGen::MovePlayerLogic()
 		this->Asset.move(1.4f, 0.f);
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->Asset.getPosition().y > 0)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && this->Asset.getPosition().y > 10.f)
 	{
 		this->Asset.move(0.f, -1.4f);
 	}

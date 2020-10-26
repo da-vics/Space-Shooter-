@@ -8,7 +8,8 @@ class PlayerCharacterGen :public BaseObjectClass
 
 public:
 
-	int PlayerHp = 100;
+	float PlayerHp = 300.f;
+	sf::RectangleShape HealthBar;
 	std::vector<BulletObj>Bullets;
 
 	PlayerCharacterGen() = delete;
@@ -17,7 +18,11 @@ public:
 		:BaseObjectClass(TextureLocation, pos, scale)
 	{
 		this->_window = window;
+		this->Asset.setPosition(0.f, 10.f);
 		this->_bullet = new BulletObj(bulletTexture, pos, sf::Vector2f(0.07f, 0.07f));
+		this->HealthBar.setSize(sf::Vector2f(this->PlayerHp, 10.f));
+		this->HealthBar.setFillColor(sf::Color::Red);
+		this->HealthBar.setPosition((this->_window->getPosition().x + (this->HealthBar.getSize().x / 2)) / 2, 0.f);
 	}
 
 	~PlayerCharacterGen();
