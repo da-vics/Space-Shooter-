@@ -1,6 +1,5 @@
 #include "PlayerCharacterGen.h"
 
-
 void PlayerCharacterGen::MovePlayerLogic()
 {
 
@@ -33,7 +32,7 @@ void PlayerCharacterGen::FireBullets()
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && this->_fireTimer >= 25)
 	{
-		this->_bullet->Asset.setPosition(this->Asset.getPosition().x + _playerWidth, this->Asset.getPosition().y);
+		this->_bullet->Asset.setPosition(this->Asset.getPosition().x + _playerWidth - 20, this->Asset.getPosition().y);
 		this->Bullets.push_back(*_bullet);
 
 		_fireTimer = 0;

@@ -13,12 +13,11 @@ public:
 
 	PlayerCharacterGen() = delete;
 
-	PlayerCharacterGen(std::string TextureLocation, sf::Vector2f pos, sf::Vector2f scale, sf::RenderWindow* window)
+	PlayerCharacterGen(std::string TextureLocation, std::string bulletTexture, sf::Vector2f pos, sf::Vector2f scale, sf::RenderWindow* window)
 		:BaseObjectClass(TextureLocation, pos, scale)
 	{
 		this->_window = window;
-		this->_bullet = new BulletObj("../Textures/missile.png", pos, scale);
-		srand(static_cast<int>(time(NULL)));
+		this->_bullet = new BulletObj(bulletTexture, pos, sf::Vector2f(0.07f, 0.07f));
 	}
 
 	~PlayerCharacterGen();

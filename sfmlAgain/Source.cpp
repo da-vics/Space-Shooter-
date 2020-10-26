@@ -1,4 +1,4 @@
-#include "PlayerCharacterGen.h"
+#include "GameLogic.h"
 
 using namespace sf;
 
@@ -9,7 +9,9 @@ int main()
 	RenderWindow window(sf::VideoMode(800, 600), "Game Dev", Style::Default);
 	window.setFramerateLimit(60);
 
-	PlayerCharacterGen Player("../Textures/playership.png", Vector2f(0.f, 0.f), Vector2f(0.1f, 0.1f), &window);
+	GameLogic gameStateLogic(&window);
+	gameStateLogic.SetupPlayer("../Textures/playership.png", "../Textures/missile.png", Vector2f(0.f, 0.f), Vector2f(0.1f, 0.1f));
+	gameStateLogic.SetupEnemy("../Textures/enemyship.png", Vector2f(0.f, 0.f), Vector2f(0.1f, 0.1f));
 
 	while (window.isOpen())
 	{
@@ -23,14 +25,12 @@ int main()
 				window.close();
 		}
 
-		Player.PlayerLogic();
+		gameStateLogic.GamePlayLogic();  ///
 
 
 		window.clear(Color::Black);
-		window.draw(Player.Asset);
 
-		for (const auto& i : Player.Bullets)
-			window.draw(i.Asset);
+		gameStateLogic.GameCharScreenLoad(); ///
 
 		window.display();
 

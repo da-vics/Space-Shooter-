@@ -149,12 +149,16 @@
   <ItemGroup>
     <ClCompile Include="BaseObjectClass.cpp" />
     <ClCompile Include="BulletObj.cpp" />
+    <ClCompile Include="EnemyCharacterGen.cpp" />
+    <ClCompile Include="GameLogic.cpp" />
     <ClCompile Include="PlayerCharacterGen.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseObjectClass.h" />
     <ClInclude Include="BulletObj.h" />
+    <ClInclude Include="EnemyCharacterGen.h" />
+    <ClInclude Include="GameLogic.h" />
     <ClInclude Include="PlayerCharacterGen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
