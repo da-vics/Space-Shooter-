@@ -20,6 +20,11 @@ GameLogic::GameLogic(sf::RenderWindow* window)
 	this->_uIScore.setFillColor(sf::Color::White);
 	this->_uIScore.setScale(0.4f, 0.4f);
 	this->_uIScore.setStyle(sf::Text::Bold);
+
+	this->_uIGameState = this->_uIScore;
+	this->_uIGameState.setPosition((this->_gamewindow->getSize().x / 2) - this->_uIScore.getCharacterSize(), this->_gamewindow->getSize().y / 2);
+	this->_uIGameState.setScale(0.8f, 0.8f);
+	this->_uIGameState.setString("Game Over!");
 }
 
 void GameLogic::SetupPlayer(std::string TextureLocation, std::string bulletLocation, sf::Vector2f pos, sf::Vector2f scale)
@@ -37,10 +42,14 @@ void GameLogic::SetupEnemy(std::string TextureLocation, sf::Vector2f pos, sf::Ve
 
 void GameLogic::GamePlayLogic()
 {
-	this->_playerCharGen->PlayerLogic();
-	this->RandEnemyGen();
-	this->MoveEnemy();
-	this->CollisonDection();
+	if (this->_gameState)
+	{
+		this->_playerCharGen->PlayerLogic();
+		this->RandEnemyGen();
+		this->MoveEnemy();
+		this->CollisonDection();
+	}
+
 }
 
 void GameLogic::RandEnemyGen()
@@ -48,14 +57,13 @@ void GameLogic::RandEnemyGen()
 	if (this->_randEnemyTimer >= 15)
 	{
 		auto temp = this->_enemyCharGen->Asset.getTextureRect().height * this->_enemyCharGen->Asset.getScale().y;
-		this->_enemyCharGen->Asset.setPosition(rand() % this->_gamewindow->getSize().x + 400, rand() % this->_gamewindow->getSize().y - temp);
+		this->_enemyCharGen->Asset.setPosition(rand() % this->_gamewindow->getSize().x + 400, (rand() % this->_gamewindow->getSize().y - temp) + 80.f);
 		this->_randEnemys.push_back(this->_enemyCharGen->Asset);
 		this->_randEnemyTimer = 0;
 	}
 
 	else
 		this->_randEnemyTimer++;
-
 }
 
 void GameLogic::GameCharScreenLoad()
@@ -73,11 +81,13 @@ void GameLogic::GameCharScreenLoad()
 	for (const auto& i : this->_randEnemys)
 		this->_gamewindow->draw(i);
 
+	if (!this->_gameState)
+		this->_gamewindow->draw(this->_uIGameState);
+
 }
 
 void GameLogic::MoveEnemy()
 {
-
 	for (size_t assetIndex = 0; assetIndex < this->_randEnemys.size(); ++assetIndex)
 	{
 		this->_randEnemys[assetIndex].move(-1.2f, 0.f);
@@ -94,9 +104,13 @@ void GameLogic::MoveEnemy()
 			(this->_playerCharGen->PlayerHp > 0) ? this->_playerCharGen->PlayerHp -= 10 : this->_playerCharGen->PlayerHp = 0;
 
 			this->_playerCharGen->HealthBar.setSize(sf::Vector2f(this->_playerCharGen->PlayerHp, 10.f));
+
+			if (this->_playerCharGen->PlayerHp <= 0)
+			{
+				this->_gameState = false;
+			}
 		}
 	}
-
 }
 
 void GameLogic::CollisonDection()
@@ -114,7 +128,6 @@ void GameLogic::CollisonDection()
 			}
 		}
 	}
-
 }
 
 GameLogic::~GameLogic()

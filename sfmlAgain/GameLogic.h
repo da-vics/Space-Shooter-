@@ -27,10 +27,12 @@ private:
 	sf::Font _font;
 	sf::Text _uIText;
 	sf::Text _uIScore;
+	sf::Text _uIGameState;
 	std::vector<sf::Sprite> _randEnemys;
 	PlayerCharacterGen* _playerCharGen{};
 	EnemyCharacterGen* _enemyCharGen{};
 	sf::RenderWindow* _gamewindow;
 	int _randEnemyTimer = 15;
+	bool _gameState{ true };
 };
 
