@@ -34,5 +34,8 @@ private:
 	sf::RenderWindow* _gamewindow;
 	int _randEnemyTimer = 15;
 	bool _gameState{ true };
+	sf::Clock _clock;
+	float _dt{};
+	float constMulti = 60.f;
 };
 

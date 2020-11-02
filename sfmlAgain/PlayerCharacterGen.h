@@ -28,7 +28,7 @@ public:
 
 	~PlayerCharacterGen();
 
-	void PlayerLogic();
+	void PlayerLogic(const float&);
 
 
 private:
@@ -36,6 +36,9 @@ private:
 	BulletObj* _bullet{ nullptr };
 	float _playerWidth = this->Asset.getTextureRect().width * this->Asset.getScale().x;
 	float _playerHeight = this->Asset.getTextureRect().height * this->Asset.getScale().y;
+	sf::Clock _clock;
+	float _dt{};
+	float constMulti = 60.f;
 
 	sf::RenderWindow* _window;
 

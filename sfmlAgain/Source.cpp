@@ -1,4 +1,5 @@
 #include "GameLogic.h"
+#include<iostream>
 
 using namespace sf;
 
@@ -7,7 +8,7 @@ int main()
 {
 
 	RenderWindow window(sf::VideoMode(800, 600), "Game Dev", Style::Default);
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(360);
 
 	GameLogic gameStateLogic(&window);
 	gameStateLogic.SetupPlayer("../Textures/playership.png", "../Textures/missile.png", Vector2f(0.f, 0.f), Vector2f(0.1f, 0.1f));
@@ -34,6 +35,7 @@ int main()
 
 		window.display();
 
+		//std::cout << dt << std::endl;
 	}
 
 	return 0;

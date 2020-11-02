@@ -36,7 +36,7 @@ void GameLogic::SetupPlayer(std::string TextureLocation, std::string bulletLocat
 
 void GameLogic::SetupEnemy(std::string TextureLocation, sf::Vector2f pos, sf::Vector2f scale)
 {
-	this->_enemyCharGen = new  EnemyCharacterGen(TextureLocation, pos, scale, _gamewindow);
+	this->_enemyCharGen = new EnemyCharacterGen(TextureLocation, pos, scale, _gamewindow);
 }
 
 
@@ -44,7 +44,8 @@ void GameLogic::GamePlayLogic()
 {
 	if (this->_gameState)
 	{
-		this->_playerCharGen->PlayerLogic();
+		this->_dt = this->_clock.restart().asSeconds();
+		this->_playerCharGen->PlayerLogic(this->_dt);
 		this->RandEnemyGen();
 		this->MoveEnemy();
 		this->CollisonDection();
@@ -54,7 +55,12 @@ void GameLogic::GamePlayLogic()
 
 void GameLogic::RandEnemyGen()
 {
-	if (this->_randEnemyTimer >= 15)
+	auto enemyRandGen = 35.f * this->_dt * this->constMulti;
+
+	//std::cout << this->_randEnemyTimer << std::endl;
+	//std::cout << "const : " << enemyRandGen << std::endl;
+
+	if ((this->_randEnemyTimer * this->_dt * this->constMulti) >= enemyRandGen)
 	{
 		auto temp = this->_enemyCharGen->Asset.getTextureRect().height * this->_enemyCharGen->Asset.getScale().y;
 		this->_enemyCharGen->Asset.setPosition(rand() % this->_gamewindow->getSize().x + 400, (rand() % this->_gamewindow->getSize().y - temp) + 80.f);
@@ -88,9 +94,11 @@ void GameLogic::GameCharScreenLoad()
 
 void GameLogic::MoveEnemy()
 {
+	auto moveStep = 2.f * this->_dt * this->constMulti;
+
 	for (size_t assetIndex = 0; assetIndex < this->_randEnemys.size(); ++assetIndex)
 	{
-		this->_randEnemys[assetIndex].move(-1.2f, 0.f);
+		this->_randEnemys[assetIndex].move(-(moveStep), 0.f);
 
 		auto temp = this->_randEnemys[assetIndex].getTextureRect().width * this->_randEnemys[assetIndex].getScale().x;
 
